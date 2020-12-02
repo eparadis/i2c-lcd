@@ -7,8 +7,6 @@
 // Defining blocks: https://makecode.com/defining-blocks
 // 
 
-
-//% groups=['lcd backpack']
 namespace LCD {
     //% block
     export function clear(): void {
@@ -16,7 +14,6 @@ namespace LCD {
     }
 
     //% block
-    //% line.min=1 line.max=2 line.defl=1
     export function clearLine(line: number): void {
 
     }
