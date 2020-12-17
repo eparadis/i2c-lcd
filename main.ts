@@ -5,7 +5,7 @@
 // - add JSDoc for help tooltips
 // NOTES
 // Defining blocks: https://makecode.com/defining-blocks
-// 
+//                  https://learn.adafruit.com/custom-extensions-for-makecode?view=all
 
 namespace LCD {
     //% block
@@ -25,10 +25,11 @@ namespace LCD {
 
     //% block
     export function log(value: number): void {
-        lcd_fmsynth_init()
-        const hw = [0x41, 0x42, 0x43, 0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x21]
-        for (let i = 0; i < hw.length; i += 1) {
-            lcd_write(hw[i])
+        lcd_fmsynth_init() // TODO don't init every time
+        // const hw = [0x41, 0x42, 0x43, 0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x21]
+        const str = value.toString()
+        for (let i = 0; i < str.length; i += 1) {
+            lcd_write(str.charCodeAt(i))
         }
     }
 
