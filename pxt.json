@@ -1,6 +1,6 @@
 {
     "name": "i2c-lcd",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "",
     "dependencies": {
         "circuit-playground": "*"
