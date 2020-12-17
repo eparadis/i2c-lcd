@@ -25,20 +25,24 @@ namespace LCD {
 
     //% block
     export function log(value: number): void {
+        writeString(value.toString())
+    }
+
+    //% block
+    export function logValue(label: string, value: number): void {
+        writeString(`${label}: ${value.toString()}`)
+    }
+
+    // ********************* internal methods ******************************** //
+
+    function writeString(str: string) {
         lcd_fmsynth_init() // TODO don't init every time
-        // const hw = [0x41, 0x42, 0x43, 0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x21]
-        const str = value.toString()
         for (let i = 0; i < str.length; i += 1) {
             lcd_write(str.charCodeAt(i))
         }
     }
 
-    //% block
-    export function logValue(label: string, value: number): void {
-
-    }
-
-    // ********************* internal methods ******************************** //
+    // ********************* the ugly guts ******************************** //
 
     // MCP23008 
     // the backlight is on GP7
