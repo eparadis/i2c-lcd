@@ -16,15 +16,15 @@ namespace LCD {
 
     //% block
     export function clearLine(line: number): void {
-
+        writeLine(line, "                ") // yep, we just overwrite it with spaces
     }
 
     //% block
     export function writeLine(line: number, text: string): void {
-        if( line == 1) {
+        if (line == 1) {
             moveCursorToFirstLine()
         }
-        if(line == 2) {
+        if (line == 2) {
             moveCursorToSecondLine()
         }
         writeString(text)
@@ -32,12 +32,14 @@ namespace LCD {
 
     //% block
     export function log(value: number): void {
+        clearCurrentLine()
         moveCursorToStartOfCurrentLine()
         writeString(value.toString())
     }
 
     //% block
     export function logValue(label: string, value: number): void {
+        clearCurrentLine()
         moveCursorToStartOfCurrentLine()
         writeString(`${label}: ${value.toString()}`)
     }
@@ -66,11 +68,16 @@ namespace LCD {
     }
 
     function moveCursorToStartOfCurrentLine() {
-        if(isOnFirstLine) {
+        if (isOnFirstLine) {
             moveCursorToFirstLine()
         } else {
             moveCursorToSecondLine()
         }
+    }
+
+    function clearCurrentLine() {
+        moveCursorToStartOfCurrentLine()
+        writeString("                ")
     }
 
     function writeString(str: string) {
