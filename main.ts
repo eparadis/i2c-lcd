@@ -8,6 +8,14 @@
 //                  https://learn.adafruit.com/custom-extensions-for-makecode?view=all
 
 namespace LCD {
+
+    export enum LCDLine {
+        //% block="top line"
+        top = 1,
+        //% block="bottom line"
+        bottom = 2,
+    }
+
     //% block="LCD clear entire screen"
     export function clear(): void {
         initializeLCD() // make sure the LCD is initialized
@@ -15,16 +23,16 @@ namespace LCD {
     }
 
     //% block="LCD clear|line%line"
-    export function LCDClear(line: number): void {
+    export function LCDClear(line: LCDLine): void {
         LCDWrite(line, "                ") // yep, we just overwrite it with spaces
     }
 
     //% block="LCD write|line%line|=%text"
-    export function LCDWrite(line: number, text: string): void {
-        if (line == 1) {
+    export function LCDWrite(line: LCDLine, text: string): void {
+        if (line == LCDLine.top) {
             moveCursorToFirstLine()
         }
-        if (line == 2) {
+        if (line == LCDLine.bottom) {
             moveCursorToSecondLine()
         }
         writeString(text)
