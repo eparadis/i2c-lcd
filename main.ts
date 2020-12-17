@@ -10,7 +10,8 @@
 namespace LCD {
     //% block
     export function clear(): void {
-
+        initializeLCD() // make sure the LCD is initialized
+        lcd_command(/*0x01*/ 0b00000001); // clear display
     }
 
     //% block
@@ -20,23 +21,60 @@ namespace LCD {
 
     //% block
     export function writeLine(line: number, text: string): void {
-
+        if( line == 1) {
+            moveCursorToFirstLine()
+        }
+        if(line == 2) {
+            moveCursorToSecondLine()
+        }
+        writeString(text)
     }
 
     //% block
     export function log(value: number): void {
+        moveCursorToStartOfCurrentLine()
         writeString(value.toString())
     }
 
     //% block
     export function logValue(label: string, value: number): void {
+        moveCursorToStartOfCurrentLine()
         writeString(`${label}: ${value.toString()}`)
     }
 
     // ********************* internal methods ******************************** //
 
+    let isInitialized = false
+    let isOnFirstLine = true
+
+    function initializeLCD() {
+        // NOTE: a better way to do this than a method and a bool is to use an object and a constructor
+        if (!isInitialized) {
+            lcd_fmsynth_init()
+            isInitialized = true
+        }
+    }
+
+    function moveCursorToFirstLine() {
+        initializeLCD()
+        lcd_command(0x80 | 0x00) // 0x80 - move cursor, 0x00 - position
+    }
+
+    function moveCursorToSecondLine() {
+        initializeLCD()
+        lcd_command(0x80 | 0x40) // 0x80 - move cursor, 0x40 - position
+    }
+
+    function moveCursorToStartOfCurrentLine() {
+        if(isOnFirstLine) {
+            moveCursorToFirstLine()
+        } else {
+            moveCursorToSecondLine()
+        }
+    }
+
     function writeString(str: string) {
-        lcd_fmsynth_init() // TODO don't init every time
+        initializeLCD() // make sure the LCD is initialized
         for (let i = 0; i < str.length; i += 1) {
             lcd_write(str.charCodeAt(i))
         }
