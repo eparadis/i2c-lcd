@@ -1,6 +1,5 @@
 // Ed Paradis
 // TODO
-// - use enums for picking the line because there is only a top and bottom line
 // - use shadowOptions.toString=true on console-style methods
 // - add JSDoc for help tooltips
 // NOTES
