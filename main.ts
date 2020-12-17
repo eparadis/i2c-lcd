@@ -8,19 +8,19 @@
 //                  https://learn.adafruit.com/custom-extensions-for-makecode?view=all
 
 namespace LCD {
-    //% block
+    //% block="LCD clear entire screen"
     export function clear(): void {
         initializeLCD() // make sure the LCD is initialized
         lcd_command(/*0x01*/ 0b00000001); // clear display
     }
 
-    //% block
-    export function clearLine(line: number): void {
-        writeLine(line, "                ") // yep, we just overwrite it with spaces
+    //% block="LCD clear|line%line"
+    export function LCDClear(line: number): void {
+        LCDWrite(line, "                ") // yep, we just overwrite it with spaces
     }
 
-    //% block
-    export function writeLine(line: number, text: string): void {
+    //% block="LCD write|line%line|=%text"
+    export function LCDWrite(line: number, text: string): void {
         if (line == 1) {
             moveCursorToFirstLine()
         }
@@ -30,15 +30,15 @@ namespace LCD {
         writeString(text)
     }
 
-    //% block
-    export function log(value: number): void {
+    //% block="LCD log|%value"
+    export function LCDLog(value: number): void {
         clearCurrentLine()
         moveCursorToStartOfCurrentLine()
         writeString(value.toString())
     }
 
-    //% block
-    export function logValue(label: string, value: number): void {
+    //% block="LCD log value|%label|=%value"
+    export function LCDLogValue(label: string, value: number): void {
         clearCurrentLine()
         moveCursorToStartOfCurrentLine()
         writeString(`${label}: ${value.toString()}`)
