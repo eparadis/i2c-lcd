@@ -1,6 +1,6 @@
 {
     "name": "i2c-lcd",
-    "version": "0.0.9",
+    "version": "1.0.0",
     "description": "",
     "dependencies": {
         "circuit-playground": "*"
@@ -12,7 +12,7 @@
     "testFiles": [
         "test.ts"
     ],
-    "public": false,
+    "public": true,
     "preferredEditor": "tsprj",
     "installedVersion": "workspace:ffce89b2-e291-4056-6190-1ea5eba6f257"
 }
