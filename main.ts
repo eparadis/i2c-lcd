@@ -1,13 +1,13 @@
 // Ed Paradis
-// TODO
-// - use shadowOptions.toString=true on console-style methods
-// - add JSDoc for help tooltips
 // NOTES
 // Defining blocks: https://makecode.com/defining-blocks
 //                  https://learn.adafruit.com/custom-extensions-for-makecode?view=all
 
 namespace LCD {
 
+    /**
+     * Which line of the LCD to use
+    */
     export enum LCDLine {
         //% block="top line"
         top = 1,
@@ -15,18 +15,31 @@ namespace LCD {
         bottom = 2,
     }
 
+    /**
+     * Clear both lines of the display and move the cursor to the top line.
+    */
     //% block="LCD clear entire screen"
     export function clear(): void {
         initializeLCD() // make sure the LCD is initialized
         lcd_command(/*0x01*/ 0b00000001); // clear display
+        moveCursorToFirstLine()
     }
 
+    /**
+     * Clear a single line of the LCD
+     * @param line Which line of the LCD to clear
+    */
     //% block="LCD clear|line%line"
     export function LCDClear(line: LCDLine): void {
         LCDWrite(line, "                ") // yep, we just overwrite it with spaces
     }
 
+    /**
+     * Overwrite the text on one of the lines of the LCD
+     * @param line Which line of the LCD to overwrite
+    */
     //% block="LCD write|line%line|=%text"
+    //% text.shadowOptions.toString=true
     export function LCDWrite(line: LCDLine, text: string): void {
         if (line == LCDLine.top) {
             moveCursorToFirstLine()
@@ -37,6 +50,10 @@ namespace LCD {
         writeString(text)
     }
 
+    /**
+     * Console-style log: Writes a line of text to the LCD
+     * @param value The value to log.
+    */
     //% block="LCD log|%value"
     export function LCDLog(value: number): void {
         clearCurrentLine()
@@ -44,7 +61,13 @@ namespace LCD {
         writeString(value.toString())
     }
 
+    /**
+     * Console-style logValue: Writes a name:value pair as a line of text to the LCD
+     * @param label the name to write
+     * @param value the value to write
+    */
     //% block="LCD log value|%label|=%value"
+    //% label.shadowOptions.toString=true
     export function LCDLogValue(label: string, value: number): void {
         clearCurrentLine()
         moveCursorToStartOfCurrentLine()
