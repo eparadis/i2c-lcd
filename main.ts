@@ -18,7 +18,7 @@ namespace LCD {
     /**
      * Clear both lines of the display and move the cursor to the top line.
     */
-    //% block="LCD clear entire screen"
+    //% block="LCD clear screen"
     export function clear(): void {
         initializeLCD() // make sure the LCD is initialized
         lcd_command(/*0x01*/ 0b00000001); // clear display
