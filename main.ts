@@ -49,8 +49,8 @@ namespace LCD {
         if (line == LCDLine.bottom) {
             moveCursorToSecondLine()
         }
-        LCDClear(line); // clear the line before we write in case this line is shorter than what's there.
-        writeString(text)
+        // make a slice of spaces that is the length required to fill the rest of the line
+        writeString(text + "                ".slice(0, 16 - text.length()));
     }
 
     /**
