@@ -16,6 +16,29 @@ namespace LCD {
     }
 
     /**
+     * Which column of the LCD to write at
+    */
+    export enum LCDColumn {
+        first = 0,
+        second = 1,
+        third = 2,
+        fourth = 3,
+        fifth = 4,
+        sixth = 5,
+        seventh = 6,
+        eighth = 7,
+        ninth = 8,
+        tenth = 9,
+        eleventh = 10,
+        twelveth = 11,
+        thirteenth = 12,
+        fourteenth = 13,
+        fifteenth = 14,
+        //% block="last"
+        sixteenth = 15
+    }
+
+    /**
      * Clear both lines of the display and move the cursor to the top line.
     */
     //% block="LCD clear screen"
@@ -79,30 +102,47 @@ namespace LCD {
 
     /**
      * Write text at a specific place on the LCD
-     * @param row The row to write at
-     * @param col The column to start the text
+     * @param row The row to write at; Starts at 0
+     * @param col The column to start the text; Starts at 0
      * @param text The text to write
     */
     //% block="LCD write string at|row%row|, column%column|, text =%text"
     //% text.shadowOptions.toString=true
     export function LCDWriteAt(row: number, column: number, text: string): void {
         let position = 0;
-        if (row > 1) { // 0 or 1 is "first line" and 2 or more is "second line"
+        if (row > 0) { // 0 is "first line" and 1 or more is "second line"
             position += 0x40;
         }
-        // for columns, we start at 1. So the left-most column is "1"
+        // for columns, we start at 0. So the left-most column is "0"
         if (column <= 0) {
             // leave position at start of line
         } else if (column > 16) {
             // clamp at 16 columns
             position += 15; // the LCD is 0-based addressing, so 15 is the right most column
         } else {
-            // position was from 1 to 16 inclusive; subtract 1 to match LCD addressing
-            position += (column - 1);
+            // position was from 0 to 15 inclusive; that matches the LCD addressing
+            position += column;
         }
 
         lcd_command(0x80 | position); // 0x80 - move cursor, position
         writeString(text);
+    }
+
+    /**
+     * Write text at a specific place on the LCD using enums for position
+     * @param row The row to write on
+     * @param col The column to write at
+     * @param text The text to write
+     */
+    //% block="LCD write string on| %row|, %column|column with text =%text"
+    //% text.shadowOptions.toString=true
+    export function LCDWriteAtWithEnums(row: LCDLine, column: LCDColumn, text: string): void {
+        // translate to numbers
+        let rowPos: number = row == LCDLine.top ? 0 : 1;
+        let colPos: number = column;
+
+        // call the numerical version
+        LCDWriteAt(rowPos, colPos, text);
     }
 
     // ********************* internal methods ******************************** //
