@@ -73,7 +73,7 @@ namespace LCD {
             moveCursorToSecondLine()
         }
         // make a slice of spaces that is the length required to fill the rest of the line
-        writeString(text + "                ".slice(0, 16 - text.length()));
+        writeString(text + "                ".slice(0, 16 - text.length));
     }
 
     /**
