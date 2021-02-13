@@ -49,6 +49,7 @@ namespace LCD {
         if (line == LCDLine.bottom) {
             moveCursorToSecondLine()
         }
+        LCDClear(line); // clear the line before we write in case this line is shorter than what's there.
         writeString(text)
     }
 
@@ -86,20 +87,20 @@ namespace LCD {
     //% text.shadowOptions.toString=true
     export function LCDWriteAt(row: number, column: number, text: string): void {
         let position = 0;
-        if( row > 1) { // 0 or 1 is "first line" and 2 or more is "second line"
+        if (row > 1) { // 0 or 1 is "first line" and 2 or more is "second line"
             position += 0x40;
         }
         // for columns, we start at 1. So the left-most column is "1"
-        if( column <= 0) {
+        if (column <= 0) {
             // leave position at start of line
-        } else if( column > 16) {
+        } else if (column > 16) {
             // clamp at 16 columns
             position += 15; // the LCD is 0-based addressing, so 15 is the right most column
         } else {
             // position was from 1 to 16 inclusive; subtract 1 to match LCD addressing
             position += (column - 1);
         }
-        
+
         lcd_command(0x80 | position); // 0x80 - move cursor, position
         writeString(text);
     }
