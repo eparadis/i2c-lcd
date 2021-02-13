@@ -29,7 +29,7 @@ namespace LCD {
      * Clear a single line of the LCD
      * @param line Which line of the LCD to clear
     */
-    //% block="LCD clear|line%line"
+    //% block="LCD clear| %line"
     export function LCDClear(line: LCDLine): void {
         LCDWrite(line, "                ") // yep, we just overwrite it with spaces
     }
@@ -39,7 +39,9 @@ namespace LCD {
      * @param line Which line of the LCD to overwrite
     */
     // desired interface: "LCD write line [top/bottom] text = [string]"
-    //% block="LCD write|text%line|=%text"
+    // close, but doesn't let you put values in for parameters: block="LCD write|line%|text =%"
+    // original: block="LCD write|text%line|text =%text"
+    //% block="LCD write| %line|, text =%text"
     //% text.shadowOptions.toString=true
     export function LCDWrite(line: LCDLine, text: string): void {
         if (line == LCDLine.top) {
