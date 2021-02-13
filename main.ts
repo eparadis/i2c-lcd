@@ -38,7 +38,8 @@ namespace LCD {
      * Overwrite the text on one of the lines of the LCD
      * @param line Which line of the LCD to overwrite
     */
-    //% block="LCD write|line%line|=%text"
+    // desired interface: "LCD write line [top/bottom] text = [string]"
+    //% block="LCD write|text%line|=%text"
     //% text.shadowOptions.toString=true
     export function LCDWrite(line: LCDLine, text: string): void {
         if (line == LCDLine.top) {
