@@ -39,8 +39,7 @@ namespace LCD {
      * @param line Which line of the LCD to overwrite
     */
     // desired interface: "LCD write line [top/bottom] text = [string]"
-    // close, but doesn't let you put values in for parameters: block="LCD write|line%|text =%"
-    // original: block="LCD write|text%line|text =%text"
+    // ended up with:     "LCD write [top/bottom] line, text = [string]" because you can't seem to suppress the 'line' after the enum
     //% block="LCD write| %line|, text =%text"
     //% text.shadowOptions.toString=true
     export function LCDWrite(line: LCDLine, text: string): void {
@@ -75,6 +74,34 @@ namespace LCD {
         clearCurrentLine()
         moveCursorToStartOfCurrentLine()
         writeString(`${label}: ${value.toString()}`)
+    }
+
+    /**
+     * Write text at a specific place on the LCD
+     * @param row The row to write at
+     * @param col The column to start the text
+     * @param text The text to write
+    */
+    //% block="LCD write string at|row%row|, column%column|, text =%text"
+    //% text.shadowOptions.toString=true
+    export function LCDWriteAt(row: number, column: number, text: string): void {
+        let position = 0;
+        if( row > 1) { // 0 or 1 is "first line" and 2 or more is "second line"
+            position += 0x40;
+        }
+        // for columns, we start at 1. So the left-most column is "1"
+        if( column <= 0) {
+            // leave position at start of line
+        } else if( column > 16) {
+            // clamp at 16 columns
+            position += 15; // the LCD is 0-based addressing, so 15 is the right most column
+        } else {
+            // position was from 1 to 16 inclusive; subtract 1 to match LCD addressing
+            position += (column - 1);
+        }
+        
+        lcd_command(0x80 | position); // 0x80 - move cursor, position
+        writeString(text);
     }
 
     // ********************* internal methods ******************************** //
