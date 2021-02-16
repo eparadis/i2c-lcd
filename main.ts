@@ -91,14 +91,15 @@ namespace LCD {
      * Console-style log: Writes a line of text to the LCD
      * @param value The value to log.
     */
-    //% block="LCD log|%value"
+    //% block="LCD log on| %line|:%value"
     //% blockId=lcd_log
     //% group="Logging"
     //% weight=20
-    export function LCDLog(value: number): void {
-        clearCurrentLine()
-        moveCursorToStartOfCurrentLine()
-        writeString(value.toString())
+    export function LCDLog(line: LCDLine, value: number): void {
+        // clearCurrentLine()
+        // moveCursorToStartOfCurrentLine()
+        // writeString(value.toString())
+        LCDWrite(line, value.toString())
     }
 
     /**
@@ -106,15 +107,16 @@ namespace LCD {
      * @param label the name to write
      * @param value the value to write
     */
-    //% block="LCD log value|%label|=%value"
+    //% block="LCD log value on|%line|%label|=%value"
     //% label.shadowOptions.toString=true
     //% blockId=lcd_log_value
     //% group="Logging"
     //% weight=10
-    export function LCDLogValue(label: string, value: number): void {
-        clearCurrentLine()
-        moveCursorToStartOfCurrentLine()
-        writeString(`${label}: ${value.toString()}`)
+    export function LCDLogValue(line: LCDLine, label: string, value: number): void {
+        // clearCurrentLine()
+        // moveCursorToStartOfCurrentLine()
+        // writeString(`${label}: ${value.toString()}`)
+        LCDWrite(line, `${label}: ${value.toString()}`)
     }
 
     /**
