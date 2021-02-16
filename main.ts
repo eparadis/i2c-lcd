@@ -3,6 +3,7 @@
 // Defining blocks: https://makecode.com/defining-blocks
 //                  https://learn.adafruit.com/custom-extensions-for-makecode?view=all
 
+//% groups=['LCD', 'Logging', 'others']
 namespace LCD {
 
     /**
@@ -43,6 +44,8 @@ namespace LCD {
     */
     //% block="LCD clear screen"
     //% blockId=lcd_clear_screen
+    //% group="LCD"
+    //% weight=20
     export function clear(): void {
         initializeLCD() // make sure the LCD is initialized
         lcd_command(/*0x01*/ 0b00000001); // clear display
@@ -55,6 +58,8 @@ namespace LCD {
     */
     //% block="LCD clear| %line"
     //% blockId=lcd_clear_line
+    //% group="LCD"
+    //% weight=10
     export function LCDClear(line: LCDLine): void {
         LCDWrite(line, "                ") // yep, we just overwrite it with spaces
     }
@@ -68,6 +73,8 @@ namespace LCD {
     //% block="LCD write| %line|, text =%text"
     //% text.shadowOptions.toString=true
     //% blockId=lcd_write_line
+    //% group="LCD"
+    //% weight=50
     export function LCDWrite(line: LCDLine, text: string): void {
         if (line == LCDLine.top) {
             moveCursorToFirstLine()
@@ -86,6 +93,8 @@ namespace LCD {
     */
     //% block="LCD log|%value"
     //% blockId=lcd_log
+    //% group="Logging"
+    //% weight=20
     export function LCDLog(value: number): void {
         clearCurrentLine()
         moveCursorToStartOfCurrentLine()
@@ -100,6 +109,8 @@ namespace LCD {
     //% block="LCD log value|%label|=%value"
     //% label.shadowOptions.toString=true
     //% blockId=lcd_log_value
+    //% group="Logging"
+    //% weight=10
     export function LCDLogValue(label: string, value: number): void {
         clearCurrentLine()
         moveCursorToStartOfCurrentLine()
@@ -115,6 +126,8 @@ namespace LCD {
     //% block="LCD write string at|row%row|, column%column|, text =%text"
     //% text.shadowOptions.toString=true
     //% blockId=lcd_write_at
+    //% group="LCD"
+    //% weight=30
     export function LCDWriteAt(row: number, column: number, text: string): void {
         let position = 0;
         if (row > 0) { // 0 is "first line" and 1 or more is "second line"
@@ -144,6 +157,8 @@ namespace LCD {
     //% block="LCD write string on| %row|, %column|column with text =%text"
     //% text.shadowOptions.toString=true
     //% blockId=lcd_write_at_with_enums
+    //% group="LCD"
+    //% weight=40
     export function LCDWriteAtWithEnums(row: LCDLine, column: LCDColumn, text: string): void {
         // translate to numbers
         let rowPos: number = row == LCDLine.top ? 0 : 1;
