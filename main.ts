@@ -72,8 +72,9 @@ namespace LCD {
         if (line == LCDLine.bottom) {
             moveCursorToSecondLine()
         }
-        // make a slice of spaces that is the length required to fill the rest of the line
-        writeString(text + "                ".slice(0, 16 - text.length));
+        // pad the text with spaces
+        const padded = (text + "                ");
+        writeString(padded.slice(0, 16)); // only take the first 16 characters, be they pad spaces or whatever.
     }
 
     /**
