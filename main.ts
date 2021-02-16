@@ -82,8 +82,7 @@ namespace LCD {
         if (line == LCDLine.bottom) {
             moveCursorToSecondLine()
         }
-        // pad the text with spaces
-        const padded = (text + "                ");
+        const padded = (text + "                "); // pad the text with spaces
         writeString(padded.slice(0, 16)); // only take the first 16 characters, be they pad spaces or whatever.
     }
 
@@ -132,22 +131,26 @@ namespace LCD {
     //% weight=30
     export function LCDWriteAt(row: number, column: number, text: string): void {
         let position = 0;
+        let trimmed_text;
         if (row > 0) { // 0 is "first line" and 1 or more is "second line"
             position += 0x40;
         }
         // for columns, we start at 0. So the left-most column is "0"
         if (column <= 0) {
             // leave position at start of line
+            trimmed_text = text.slice(0, 16); // but trim at 16 characters
         } else if (column > 16) {
             // clamp at 16 columns
             position += 15; // the LCD is 0-based addressing, so 15 is the right most column
+            trimmed_text = text.slice(0,1); // only the first character remains
         } else {
             // position was from 0 to 15 inclusive; that matches the LCD addressing
             position += column;
+            trimmed_text = text.slice(0, 16 - column);
         }
 
         lcd_command(0x80 | position); // 0x80 - move cursor, position
-        writeString(text);
+        writeString(trimmed_text); // only take the first 16 characters, be they pad spaces or whatever.
     }
 
     /**
