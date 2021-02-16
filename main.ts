@@ -42,6 +42,7 @@ namespace LCD {
      * Clear both lines of the display and move the cursor to the top line.
     */
     //% block="LCD clear screen"
+    //% blockId=lcd_clear_screen
     export function clear(): void {
         initializeLCD() // make sure the LCD is initialized
         lcd_command(/*0x01*/ 0b00000001); // clear display
@@ -53,6 +54,7 @@ namespace LCD {
      * @param line Which line of the LCD to clear
     */
     //% block="LCD clear| %line"
+    //% blockId=lcd_clear_line
     export function LCDClear(line: LCDLine): void {
         LCDWrite(line, "                ") // yep, we just overwrite it with spaces
     }
@@ -65,6 +67,7 @@ namespace LCD {
     // ended up with:     "LCD write [top/bottom] line, text = [string]" because you can't seem to suppress the 'line' after the enum
     //% block="LCD write| %line|, text =%text"
     //% text.shadowOptions.toString=true
+    //% blockId=lcd_write_line
     export function LCDWrite(line: LCDLine, text: string): void {
         if (line == LCDLine.top) {
             moveCursorToFirstLine()
@@ -82,6 +85,7 @@ namespace LCD {
      * @param value The value to log.
     */
     //% block="LCD log|%value"
+    //% blockId=lcd_log
     export function LCDLog(value: number): void {
         clearCurrentLine()
         moveCursorToStartOfCurrentLine()
@@ -95,6 +99,7 @@ namespace LCD {
     */
     //% block="LCD log value|%label|=%value"
     //% label.shadowOptions.toString=true
+    //% blockId=lcd_log_value
     export function LCDLogValue(label: string, value: number): void {
         clearCurrentLine()
         moveCursorToStartOfCurrentLine()
@@ -109,6 +114,7 @@ namespace LCD {
     */
     //% block="LCD write string at|row%row|, column%column|, text =%text"
     //% text.shadowOptions.toString=true
+    //% blockId=lcd_write_at
     export function LCDWriteAt(row: number, column: number, text: string): void {
         let position = 0;
         if (row > 0) { // 0 is "first line" and 1 or more is "second line"
@@ -137,6 +143,7 @@ namespace LCD {
      */
     //% block="LCD write string on| %row|, %column|column with text =%text"
     //% text.shadowOptions.toString=true
+    //% blockId=lcd_write_at_with_enums
     export function LCDWriteAtWithEnums(row: LCDLine, column: LCDColumn, text: string): void {
         // translate to numbers
         let rowPos: number = row == LCDLine.top ? 0 : 1;
