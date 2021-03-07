@@ -173,6 +173,18 @@ namespace LCD {
         LCDWriteAt(rowPos, colPos, text);
     }
 
+    /**
+     * Turn the LCD backlight on or off
+     * @param lit true to turn the backlight on, false to turn it off
+     */
+    //% block="LCD set backlight| %lit"
+    //% blockId=lcd_set_backlight
+    //% group="LCD"
+    //% weight=50
+    export function LCDSetBacklight(lit: boolean): void {
+        setLCDBacklight(lit);
+    }
+
     // ********************* internal methods ******************************** //
 
     let isInitialized = false
@@ -214,6 +226,13 @@ namespace LCD {
         for (let i = 0; i < str.length; i += 1) {
             lcd_write(str.charCodeAt(i))
         }
+    }
+
+    function setLCDBacklight(lit: boolean) {
+        // we're passing through this middle layer only to make sure that
+        //   if we try to change the backlight first, we've done this initialization
+        initializeLCD()
+        lcd_backlight(lit)
     }
 
     // ********************* the ugly guts ******************************** //
@@ -344,11 +363,19 @@ namespace LCD {
         control.waitMicros(ms * 1000)
     }
 
+    function lcd_backlight(lit: boolean) {
+        if(lit) {
+            mcp_digitalWrite(7, HIGH)     // turn the backlight on
+        } else {
+            mcp_digitalWrite(7, LOW)     // turn the backlight off
+        }
+    }
+
     function lcd_fmsynth_init() {
         // first part was adapted from Adafruit's library
         mcp_begin()
         mcp_pinMode(7, OUTPUT)
-        mcp_digitalWrite(7, HIGH)     // turn the backlight on
+        lcd_backlight(true)
         for (let i = 0; i < 4; i++)
             mcp_pinMode(_data_pins[i], OUTPUT);
         mcp_pinMode(_rs_pin, OUTPUT);
